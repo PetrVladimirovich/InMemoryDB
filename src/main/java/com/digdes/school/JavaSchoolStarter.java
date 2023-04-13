@@ -234,7 +234,7 @@ public class JavaSchoolStarter {
                     }else if (inInput.endsWith("%")) {
                         return inDb.toString().toLowerCase().startsWith(inInput.toLowerCase().replace("%", ""));
                     }else if (!inInput.contains("%")) {
-                        return inDb.toString().equals(inInput);
+                        return inDb.toString().toLowerCase().equals(inInput.toLowerCase());
                     }
                 }
             }

@@ -20,7 +20,8 @@ public class Main {
             System.out.println(starter.execute("SELECT"));
             System.out.println("DELETE: " + starter.execute("DELete Where 'age' = 100 and 'id' !=5"));
             starter.printDB();
-            System.out.println("SELECT with WHERE : " + starter.execute("SELECT where 'lastname'  like '%тро' or 'lastName' like 'Фед%'"));
+            System.out.println("SELECT with WHERE : " + starter.execute("SELECT where 'lastname'  like 'пе%' or 'lastName' like 'Фед%'"));
+            System.out.println("SELECT with WHERE : " + starter.execute("SELECT where 'lastname'  ilike 'пе%' or 'lastName' like 'Фед%'"));
             System.out.println(starter.execute("UPDATE VALUES 'cost'=0.01 where 'id'=4 oR 'age' = 40"));
             starter.printDB();
             System.out.println();
