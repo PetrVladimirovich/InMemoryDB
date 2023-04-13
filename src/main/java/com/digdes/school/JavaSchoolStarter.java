@@ -88,13 +88,24 @@ public class JavaSchoolStarter {
                         idxClose = j;
                         continue;
                     }
-
-                    if (db.get(i).containsKey(arrBlocks.get(j))) {
+/*TODO
+*   не работает случай ( 1 and 2 ) OR 3
+*
+*
+*
+* */
+                    String key;
+                   if (arrBlocks.get(j).equals("lastname"))  {
+                       key = "lastName";
+                   }else {
+                       key = arrBlocks.get(j);
+                   }
+                    if (db.get(i).containsKey(key)) {
                         boolean ok = validationOperationForField(arrBlocks.get(j), arrBlocks.get(j+1));
                         if (ok) {
                             validate = operatorEqual(arrBlocks.get(j),
                                     arrBlocks.get(j+1),
-                                    db.get(i).get(arrBlocks.get(j)),
+                                    db.get(i).get(key),
                                     arrBlocks.get(j+2));
                         }
                         if ((validate && j > idxOpen && arrBlocks.size()-1 > j+4 && arrBlocks.get(j+3).equals(")")
@@ -171,8 +182,8 @@ public class JavaSchoolStarter {
 
         } else if (lowCase.startsWith("delete")) {
             if (!validateElem.isEmpty()) {
-                for (int i = validateElem.size()-1; i != 0; i--) {
-                    answer.add(db.get(i));
+                for (int i = validateElem.size(); i != 0; i--) {
+                    answer.add(db.get(validateElem.get(i -1)));
                     db.remove(i);
                 }
             }else if (!db.isEmpty() && !isWhere) {
@@ -182,13 +193,11 @@ public class JavaSchoolStarter {
 
         } else if (lowCase.startsWith("select")) {
             if (!validateElem.isEmpty()) {
-                for (int i = validateElem.size()-1; i != 0; i--) {
-                    answer.add(db.get(i));
+                for (int i = validateElem.size(); i != 0; i--) {
+                    answer.add(db.get(validateElem.get(i -1)));
                 }
             }else if (!db.isEmpty() && !isWhere) {
-                for (Map<String, Object> map : db) {
-                    answer.add(map);
-                }
+                answer = List.copyOf(db);
             }
         } else {
 
@@ -202,7 +211,7 @@ public class JavaSchoolStarter {
 
     private boolean operatorEqual(String field, String sign, Object inDb, String inInput) throws Exception{
         switch (field) {
-            case "lastName" -> {
+            case "lastname", "lastName" -> {
                 if (sign.equals("!=")) {
                     return !inDb.toString().equals(inInput);
 
@@ -217,6 +226,8 @@ public class JavaSchoolStarter {
                         return inDb.toString().endsWith(inInput.replace("%", ""));
                     }else if (inInput.endsWith("%")) {
                         return inDb.toString().startsWith(inInput.replace("%", ""));
+                    }else if (!inInput.contains("%")) {
+                        return inDb.toString().equals(inInput);
                     }
 
                 }else if (sign.equals("ilike")) {
@@ -227,6 +238,8 @@ public class JavaSchoolStarter {
                         return inDb.toString().toLowerCase().endsWith(inInput.toLowerCase().replace("%", ""));
                     }else if (inInput.endsWith("%")) {
                         return inDb.toString().toLowerCase().startsWith(inInput.toLowerCase().replace("%", ""));
+                    }else if (!inInput.contains("%")) {
+                        return inDb.toString().equals(inInput);
                     }
                 }
             }
@@ -272,7 +285,7 @@ public class JavaSchoolStarter {
 
     private boolean validationOperationForField(String field, String operation) throws Exception{
         switch (field) {
-            case "lastName" -> {
+            case "lastname", "lastName" -> {
                 if (operation.equals("!=") ||
                     operation.equals("=") ||
                     operation.equals("ilike") ||
