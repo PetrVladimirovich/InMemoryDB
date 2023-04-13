@@ -88,12 +88,7 @@ public class JavaSchoolStarter {
                         idxClose = j;
                         continue;
                     }
-/*TODO
-*   не работает случай ( 1 and 2 ) OR 3
-*
-*
-*
-* */
+
                     String key;
                    if (arrBlocks.get(j).equals("lastname"))  {
                        key = "lastName";
@@ -184,7 +179,7 @@ public class JavaSchoolStarter {
             if (!validateElem.isEmpty()) {
                 for (int i = validateElem.size(); i != 0; i--) {
                     answer.add(db.get(validateElem.get(i -1)));
-                    db.remove(i);
+                    db.remove((int)validateElem.get(i -1));
                 }
             }else if (!db.isEmpty() && !isWhere) {
                 answer = List.copyOf(db);
